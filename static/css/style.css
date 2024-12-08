@@ -90,3 +90,11 @@ label {
     font-weight: bold;
     padding: 5px;
 }
+
+.offline {
+    font-family: "Tahoma";
+    width: 20%;
+    margin: auto;
+    padding-top: 20px;
+    text-align: center;
+}

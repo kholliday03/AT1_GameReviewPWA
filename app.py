@@ -18,7 +18,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_db(): 
-    db = sqlite3.connect('database/photo_journal.db') 
+    db = sqlite3.connect('database/database.db') 
     db.row_factory = sqlite3.Row 
     return db
 
@@ -34,7 +34,7 @@ def login():
 
         db = get_db()
         user = db.execute(
-            "SELECT * FROM users WHERE username = ?", (username,)
+            "SELECT * FROM accounts WHERE username = ?", (username,)
         ).fetchone()
 
         if user and check_password_hash(user["password"], password):
@@ -55,7 +55,7 @@ def register():
         db = get_db()
         try:
             db.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
+                "INSERT INTO accounts (username, password) VALUES (?, ?)",
                 (username, generate_password_hash(password))
             )
             db.commit()
@@ -65,6 +65,25 @@ def register():
         return redirect(url_for("login"))
     
     return render_template("register.html")
+
+@app.route("/offline")
+def offline():
+    response = make_response(render_template('offline.html'))
+    return response
+
+@app.route("/service-worker.js")
+def sw():
+    response = make_response(
+        send_from_directory(os.path.join(app.root_path, "static/js"), "service-worker.js")
+    )
+    return response
+
+@app.route("/manifest.json")
+def manifest():
+    response = make_response(
+        send_from_directory(os.path.join(app.root_path, "static"), "manifest.json")
+    )
+    return response
 
 @app.route("/logout")
 def logout():
