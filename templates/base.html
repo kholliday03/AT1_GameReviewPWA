@@ -21,16 +21,20 @@
 </head>
 <body>
     <div class="header">
-        <img src="/static/icons/logo-128x128.png" class="logo">
-        <h1>GGReviews</h1>
+        <a href="{{ url_for('index') }}" class="header-redirect">
+            <img src="/static/icons/logo-128x128.png" class="logo">
+            <h1>GGReviews</h1>
+        </a>
         
         <form method="post">
             <input type="text" class="search">
                 <button type="submit" class="search-button">Search</button>
             </input>
         </form>
-        {% block account_detail %}
+        {% block login_status %}
         {% endblock %}
     </div>
+    {% block content %}
+    {% endblock %}
 </body>
 </html>

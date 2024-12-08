@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block account_detail %}
+{% block login_status %}
     <div class="header">
         {% if not session.user_id %}
         <a href="{{ url_for('login') }}" class="account-access-link">
@@ -12,4 +12,8 @@
         </a>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block content %}
+    
 {% endblock %}

@@ -30,20 +30,47 @@ h1 {
     padding: 5px 
 }
 
+.header-redirect {
+    text-decoration: none;
+}
+
 .account-access {
+    font-family: "Tahoma";
+    font-size: 18px;
     background-color: white;
     padding: 20px;
-    margin-bottom: 20px;
-    width: 500px;
+    width: 30%;
     margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .account-access-link {
     font-family: "Tahoma";
     text-align: right;
-    width: 500px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 440px;
+    border: 3px solid black;
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 2px;
+    background-color: aliceblue;
+    text-decoration: none;
+    color: #333
+}
+
+.account-access-inputs {
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.account-access-buttons {
+    font-size: 18px;
     margin-top: 20px;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-family: "Tahoma";
 }
 
 label {
@@ -52,12 +79,14 @@ label {
 }
 
 .search {
+    padding: 5px;
     margin-left: 100px;
     width: 250px;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .search-button {
     font-family: "Orbitron", Arial;
     font-weight: bold;
+    padding: 5px;
 }
