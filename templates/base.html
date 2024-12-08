@@ -23,6 +23,22 @@
     <div class="header">
         <img src="/static/icons/logo-128x128.png" class="logo">
         <h1>GGReviews</h1>
+        
+        <form method="post">
+            <input type="text" class="search">
+                <button type="submit" class="search-button">Search</button>
+            </input>
+        </form>
+        
+        {% if not session.user_id %}
+        <a href="{{ url_for('login') }}" class="account-access-link">
+            Login
+        </a>
+        {% else %}
+        <a href="{{ url_for('logout') }}" class="account-access-link">
+            Logout
+        </a>
+        {% endif %}
     </div>
 </body>
 </html>

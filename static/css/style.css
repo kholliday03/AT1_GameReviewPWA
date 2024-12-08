@@ -25,6 +25,7 @@ h1 {
 } 
  
 .header { 
+    display: flex;
     background-color: rgb(153, 204, 255); 
     padding: 5px 
 }
@@ -38,7 +39,25 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.account-access-link {
+    font-family: "Tahoma";
+    text-align: right;
+    width: 500px;
+    margin-top: 20px;
+}
+
 label {
     display: block;
     margin-top: 10px;
+}
+
+.search {
+    margin-left: 100px;
+    width: 250px;
+    margin-top: 20px;
+}
+
+.search-button {
+    font-family: "Orbitron", Arial;
+    font-weight: bold;
 }
