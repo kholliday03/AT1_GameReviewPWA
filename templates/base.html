@@ -29,16 +29,8 @@
                 <button type="submit" class="search-button">Search</button>
             </input>
         </form>
-        
-        {% if not session.user_id %}
-        <a href="{{ url_for('login') }}" class="account-access-link">
-            Login
-        </a>
-        {% else %}
-        <a href="{{ url_for('logout') }}" class="account-access-link">
-            Logout
-        </a>
-        {% endif %}
+        {% block account_detail %}
+        {% endblock %}
     </div>
 </body>
 </html>

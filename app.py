@@ -24,8 +24,7 @@ def get_db():
 
 @app.route("/")
 def index():
-    if "user_id" not in session:
-        pass
+    return render_template("index.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
