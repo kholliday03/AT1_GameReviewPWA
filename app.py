@@ -23,9 +23,9 @@ def get_db():
     return db
 
 @app.route("/")
-def base():
+def index():
     if "user_id" not in session:
-        return redirect(url_for("login"))
+        pass
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
