@@ -22,9 +22,14 @@ def get_db():
     db.row_factory = sqlite3.Row 
     return db
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+@app.route("/<query>")
+def index(query):
+    db = get_db()
+    if query:
+        games = db.execute("SELECT * FROM games WHERE game_title LIKE ?", (f"%{query}%"))
+    else:
+        games = db.execute("SELECT * FROM games")
+    return render_template("index.html"), games
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -89,5 +94,16 @@ def manifest():
 def logout():
     session.clear()
     return redirect(url_for("index"))
+
+@app.route("/game/<id>")
+def game(id):
+    
+    db = get_db()
+    try:
+        jointTable = db.execute("SELECT posts, games FROM posts JOIN games ON posts.game_id=games.game_id")
+        gameData = db.execute()
+    except Exception:
+        flash("Error: Invalid Game ID!", "error")
+        return redirect(url_for("index"))
 
 app.run(debug=True, port=5000)
