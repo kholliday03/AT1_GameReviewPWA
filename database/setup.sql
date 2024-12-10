@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS posts(
 
 CREATE TABLE IF NOT EXISTS games(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    game_id INTEGER NOT NULL,
     game_title TEXT NOT NULL,
     year_released INTEGER NOT NULL,
     game_cover_path TEXT NOT NULL,

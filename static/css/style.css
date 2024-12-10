@@ -101,3 +101,11 @@ label {
     padding-top: 20px;
     text-align: center;
 }
+
+.game-collection {
+    width: 85%;
+}
+
+.game-title {
+    font-family: "Tahoma";
+}

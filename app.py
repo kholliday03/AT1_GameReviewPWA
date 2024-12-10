@@ -26,9 +26,9 @@ def get_db():
 def index(query):
     db = get_db()
     if query:
-        games = db.execute("SELECT * FROM games WHERE game_title LIKE ?", (f"%{query}%"))
+        games = db.execute("SELECT * FROM games WHERE game_title LIKE ? ORDER BY year_released DESC", (f"%{query}%"))
     else:
-        games = db.execute("SELECT * FROM games")
+        games = db.execute("SELECT * FROM games ORDER BY year_released DESC")
     return render_template("index.html"), games
 
 @app.route("/login", methods=["POST", "GET"])
