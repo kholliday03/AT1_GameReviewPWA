@@ -104,8 +104,13 @@ label {
 
 .game-collection {
     width: 85%;
+    display: inline-block;
 }
 
 .game-title {
     font-family: "Tahoma";
+}
+
+.game-cover {
+    width: 15%;
 }

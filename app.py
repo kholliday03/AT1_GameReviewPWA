@@ -22,14 +22,19 @@ def get_db():
     db.row_factory = sqlite3.Row 
     return db
 
-@app.route("/<query>")
-def index(query):
+@app.route("/")
+def index():
+    return redirect((url_for("home")))
+
+@app.route("/home", defaults={"query": ""}) # From ChatGPT - Setting a default value for query when query is empty - required as Flask handles this awkwardly.
+@app.route("/home/<query>")
+def home(query):
     db = get_db()
     if query:
-        games = db.execute("SELECT * FROM games WHERE game_title LIKE ? ORDER BY year_released DESC", (f"%{query}%"))
+        games = db.execute("SELECT * FROM games WHERE game_title LIKE ? ORDER BY year_released DESC", (f"%{query}%",)).fetchall()
     else:
-        games = db.execute("SELECT * FROM games ORDER BY year_released DESC")
-    return render_template("index.html"), games
+        games = db.execute("SELECT * FROM games ORDER BY year_released DESC").fetchall()
+    return render_template("index.html", games=games)
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -93,7 +98,7 @@ def manifest():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("home"))
 
 @app.route("/game/<id>")
 def game(id):

@@ -18,7 +18,7 @@
 {% block content %}
     <div class="game-collection">
         {% for game in games %}
-            <img src="{{ game.game_cover_image }}" alt="{{ game.game_title }} Cover Image">
+            <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
             <div class="game-title">
                 {{ game.game_title }}
             </div>
