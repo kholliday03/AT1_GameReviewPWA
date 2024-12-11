@@ -26,14 +26,18 @@ def get_db():
 def index():
     return redirect((url_for("home")))
 
-@app.route("/home", defaults={"query": ""}) # From ChatGPT - Setting a default value for query when query is empty - required as Flask handles this awkwardly.
-@app.route("/home/<query>")
+@app.route("/home", defaults={"query": ""}, methods=["POST", "GET"]) # From ChatGPT - Setting a default value for query when query is empty - required as Flask handles this awkwardly.
+@app.route("/home/<query>", methods=["POST", "GET"])
 def home(query):
     db = get_db()
+    if request.method == "POST":
+        query = request.form["game-search"]
+
     if query:
         games = db.execute("SELECT * FROM games WHERE game_title LIKE ? ORDER BY year_released DESC", (f"%{query}%",)).fetchall()
     else:
         games = db.execute("SELECT * FROM games ORDER BY year_released DESC").fetchall()
+
     return render_template("index.html", games=games)
 
 @app.route("/login", methods=["POST", "GET"])

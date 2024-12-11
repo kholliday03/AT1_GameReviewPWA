@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block login_status %}
+
     <div class="header">
+        <form method="post">
+            <input type="text" name="game-search" class="search">
+                <button type="submit" class="search-button">Search</button>
+            </input>
+        </form>
+
         {% if not session.user_id %}
         <a href="{{ url_for('login') }}" class="account-access-link">
             Login
