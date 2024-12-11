@@ -16,14 +16,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="game-collection">
-        {% for game in games %}
-            <a href="{{ url_for('game', id=game.id) }}" class="game-of-games">
-                <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
-                <div class="game-title">
-                    {{ game.game_title }}
-                </div>
-            </a>
-        {% endfor %}
+    <div class="in-game-title">
+        <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
+        <h2>{{ game.game_title }}</h2>
+        <p>{{ game.game_desc }}</p>
     </div>
 {% endblock %}

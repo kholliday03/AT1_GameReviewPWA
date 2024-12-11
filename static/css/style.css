@@ -2,6 +2,7 @@
  
 body { 
     background-color: white; 
+    margin: 0;
 } 
  
 h1 { 
@@ -16,6 +17,8 @@ h1 {
 
 p {
     font-family: "Tahoma";
+    margin-left: 10px;
+    margin-right: 10px;
 }
  
 .logo { 
@@ -104,13 +107,27 @@ label {
 
 .game-collection {
     width: 85%;
-    display: inline-block;
+    display: grid;
 }
 
 .game-title {
     font-family: "Tahoma";
+    display: inline;
 }
 
 .game-cover {
-    width: 15%;
+    width: 20%;
+    display: inline-block;
+}
+
+.game-of-games {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.in-game-title {
+    font-family: Tahoma;
 }

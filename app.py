@@ -102,11 +102,13 @@ def logout():
 
 @app.route("/game/<id>")
 def game(id):
-    
     db = get_db()
     try:
-        jointTable = db.execute("SELECT posts, games FROM posts JOIN games ON posts.game_id=games.game_id")
-        gameData = db.execute()
+        gamePostData = db.execute(f"SELECT posts.*, games.* FROM posts JOIN games ON posts.game_id=games.id WHERE games.id = {id}").fetchall()
+        rows = db.execute("SELECT COUNT(*) FROM posts JOIN games ON posts.game_id = games.id WHERE games.id = ?", (id,)).fetchone()[0]
+        if rows == 0:
+            gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
+        return render_template("game.html", game=gamePostData)
     except Exception:
         flash("Error: Invalid Game ID!", "error")
         return redirect(url_for("index"))
