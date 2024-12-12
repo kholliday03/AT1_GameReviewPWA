@@ -100,17 +100,22 @@ def game(id):
     db = get_db()
     gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
     postData = db.execute(f"SELECT posts.*, games.*, accounts.* FROM posts JOIN accounts ON posts.user_id=accounts.id JOIN games ON posts.game_id=games.id WHERE games.id = ?", (id,)).fetchall()
-    return render_template("game.html", game=gamePostData, posts=postData)
+    averageRating = db.execute(f"SELECT AVG(posts.rating) AS average FROM posts WHERE posts.game_id = ?", (id,)).fetchone()
+    return render_template("game.html", game=gamePostData, posts=postData, averageRating=averageRating)
 
 @app.route("/add_entry", methods=["POST"])
 def add_entry():
     db = get_db()
+    try:    # Failsafe for if the user posts a review with no rating, whether deliberate or intentional.
+        rating_fix = request.form["rating"]     # Normal rating (1-5 stars)
+    except Exception:
+        rating_fix = 0  # No rating (0 stars)
     db.execute("INSERT INTO posts (user_id, game_id, title, description, rating, created_at) VALUES (?, ?, ?, ?, ?, ?)", (
         session["user_id"],
         request.form["game_id"],
         request.form["title"],
         request.form["description"],
-        request.form["rating"],
+        rating_fix,
         datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ))
     db.commit()

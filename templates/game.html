@@ -19,6 +19,7 @@
     <div class="in-game-title">
         <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
         <h2>{{ game.game_title }}</h2>
+        <p>Rating: {{ averageRating.average | round(2) }}/5</p> <!-- ChatGPT - using the Python round function but with Jinja2 -->
         <p>{{ game.game_desc }}</p>
     </div>
 
@@ -40,16 +41,10 @@
             <div>
             <label for="rating">Rating:</label>
                 <div class="rating">
-                    <input type="radio" id="star5" name="rating" value="5">
-                    <label for="star5" title="5 stars">★</label>
-                    <input type="radio" id="star4" name="rating" value="4">
-                    <label for="star4" title="4 stars">★</label>
-                    <input type="radio" id="star3" name="rating" value="3">
-                    <label for="star3" title="3 stars">★</label>
-                    <input type="radio" id="star2" name="rating" value="2">
-                    <label for="star2" title="2 stars">★</label>
-                    <input type="radio" id="star1" name="rating" value="1">
-                    <label for="star1" title="1 star">★</label>
+                    {% for level in range(5) %} <!-- id, for, value came from AI-generated suggestions (ChatGPT) -->
+                        <input type="radio" id="star{{ 5 - level }}" name="rating" value="{{ 5 - level }}">
+                        <label for="star{{ 5 - level }}" title="{{ 5 - level }} stars">{% if (5 - level) >= 1 %}★{% endif %}</label>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -57,7 +52,7 @@
         </form> 
 
     {% else %}
-        <p>You are not logged in. Only logged in users can post reviews.<br></p>
+        <p>You are not logged in. Only logged in users can post reviews.</p>
         <p>Click <a href="{{ url_for('login') }}">here</a> to log in.</p>
     {% endif %}
 
