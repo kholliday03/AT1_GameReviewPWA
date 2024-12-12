@@ -65,7 +65,11 @@
     {% for post in posts %}
         <div>
             <h3>{{ post.title }}</h3>
-            <span class="timestamp">Created at: {{ post.created_at }}</span>
+            <span class="review_header">
+                Review posted by {{ post.username }}<br>
+                Created at: {{ post.created_at }}<br>
+                Rating: {{ post.rating }}/5
+            </span>
             <p>{{ post.description }}</p>
         </div>
     {% endfor %}

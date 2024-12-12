@@ -99,7 +99,7 @@ def logout():
 def game(id):
     db = get_db()
     gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
-    postData = db.execute(f"SELECT posts.*, games.* FROM games JOIN posts ON games.id=posts.game_id WHERE games.id = ?", (id,)).fetchall()
+    postData = db.execute(f"SELECT posts.*, games.*, accounts.* FROM posts JOIN accounts ON posts.user_id=accounts.id JOIN games ON posts.game_id=games.id WHERE games.id = ?", (id,)).fetchall()
     return render_template("game.html", game=gamePostData, posts=postData)
 
 @app.route("/add_entry", methods=["POST"])
@@ -111,11 +111,11 @@ def add_entry():
         request.form["title"],
         request.form["description"],
         request.form["rating"],
-        datetime.now().timestamp()
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ))
     db.commit()
 
     flash("Review created.")
-    return redirect(url_for("game", id=id))
+    return redirect(url_for("game", id=request.form["game_id"]))
 
 app.run(debug=True, port=5000)
