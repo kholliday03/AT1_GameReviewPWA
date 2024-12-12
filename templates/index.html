@@ -28,7 +28,7 @@
             <a href="{{ url_for('game', id=game.id) }}" class="game-of-games">
                 <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
                 <div class="game-title">
-                    {{ game.game_title }}
+                    {{ game.game_title }} ({{ game.year_released }})
                 </div>
             </a>
         {% endfor %}

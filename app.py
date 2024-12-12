@@ -110,7 +110,7 @@ def game(id):
     try:
         gamePostData = db.execute(f"SELECT posts.*, games.* FROM posts JOIN games ON posts.game_id=games.id WHERE games.id = {id}").fetchall()
         rows = db.execute("SELECT COUNT(*) FROM posts JOIN games ON posts.game_id = games.id WHERE games.id = ?", (id,)).fetchone()[0]
-        if rows == 0:
+        if rows == 0:   # Alternative query in case a website has no reviews.
             gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
         return render_template("game.html", game=gamePostData)
     except Exception:

@@ -43,4 +43,35 @@
 --     "Descend into the depths of an alien underwater world filled with wonder and peril. Craft equipment, pilot submarines and out-smart wildlife to explore lush coral reefs, volcanoes, cave systems, and more - all while trying to survive."
 --     );
 
-SELECT * FROM games WHERE id = 1;
+-- INSERT INTO games(game_title, year_released, game_cover_path, game_desc) VALUES
+--     
+--     (
+--     "VALORANT",
+--     2020, 
+--     "/static/coverimages/valorant.jpg", 
+--     "VALORANT is a character-based 5v5 tactical shooter set on the global stage. Outwit, outplay, and outshine your competition with tactical abilities, precise gunplay, and adaptive teamwork."
+--     );
+
+-- INSERT INTO games(game_title, year_released, game_cover_path, game_desc) VALUES
+-- 
+--     (
+--     "Pico Park",
+--     2016,    
+--     "/static/coverimages/pico-park.jpg",
+--     "PICO PARK is a cooperative local/online multiplay action puzzle game for 2-8 players. The rule is quite simple: Get all the keys and get to the goal and clear, but all 48 levels have special gimmicks designed specifically for multiplayer."
+--     ),
+-- 
+--     (
+--     "Muck",
+--     2021,
+--     "/static/coverimages/muck.jpg",
+--     "Muck is a survival-roguelike. Collect resources, find items & build a base to survive for as long as you can."
+--     );
+-- INSERT INTO games(game_title, year_released, game_cover_path, game_desc) VALUES
+-- 
+--     (
+--     "Block Blast!",
+--     2022,
+--     "/static/coverimages/block-blast.jpg",
+--     "Block Blast is a free and popular block puzzle game that is your best choice when you want to pass the casual time and challenge your brain. The goal of this block puzzle game is easy yet fun: match and clear as many colored blocks as possible on the board."
+--     );
