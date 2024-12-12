@@ -8,15 +8,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "SftEng-PWA-AT1"
 
-UPLOAD_FOLDER = 'static/uploads' 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'} 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-def allowed_file(filename): 
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 def get_db(): 
     db = sqlite3.connect('database/database.db') 
     db.row_factory = sqlite3.Row 
@@ -116,5 +107,21 @@ def game(id):
     except Exception:
         flash("Error: Invalid Game ID!", "error")
         return redirect(url_for("index"))
+
+@app.route("/add_entry", methods=["POST"])
+def add_entry():
+    db = get_db()
+    db.execute("INSERT INTO posts (user_id, game_id, title, description, rating, created_at) VALUES (?, ?, ?, ?, ?, ?)", (
+        session["user_id"],
+        request.form["game_id"],
+        request.form["title"],
+        request.form["description"],
+        request.form["rating"],
+        datetime.now().timestamp()
+    ))
+    db.commit()
+
+    flash("Review created.")
+    return redirect(url_for("game", id=id))
 
 app.run(debug=True, port=5000)

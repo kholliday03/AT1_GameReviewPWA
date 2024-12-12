@@ -130,3 +130,25 @@ label {
 .in-game-title {
     font-family: Tahoma;
 }
+
+/* From line 136 to line 154 has AI-generated CSS styling elements for the rating system. */
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+.rating input {
+    display: none;
+}
+.rating label {
+    font-size: 2rem;
+    color: lightgray;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
+}
