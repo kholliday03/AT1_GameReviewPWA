@@ -3,7 +3,7 @@ import sqlite3
 import os 
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename 
-from datetime import datetime 
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "SftEng-PWA-AT1"
@@ -98,15 +98,9 @@ def logout():
 @app.route("/game/<id>")
 def game(id):
     db = get_db()
-    try:
-        gamePostData = db.execute(f"SELECT posts.*, games.* FROM posts JOIN games ON posts.game_id=games.id WHERE games.id = {id}").fetchall()
-        rows = db.execute("SELECT COUNT(*) FROM posts JOIN games ON posts.game_id = games.id WHERE games.id = ?", (id,)).fetchone()[0]
-        if rows == 0:   # Alternative query in case a website has no reviews.
-            gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
-        return render_template("game.html", game=gamePostData)
-    except Exception:
-        flash("Error: Invalid Game ID!", "error")
-        return redirect(url_for("index"))
+    gamePostData = db.execute(f"SELECT * FROM games WHERE id = ?", (id,)).fetchone()
+    postData = db.execute(f"SELECT posts.*, games.* FROM games JOIN posts ON games.id=posts.game_id WHERE games.id = ?", (id,)).fetchall()
+    return render_template("game.html", game=gamePostData, posts=postData)
 
 @app.route("/add_entry", methods=["POST"])
 def add_entry():
