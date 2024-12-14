@@ -103,8 +103,8 @@ def game(id):
     averageRating = db.execute(f"SELECT AVG(posts.rating) AS average FROM posts WHERE posts.game_id = ?", (id,)).fetchone()
     return render_template("game.html", game=gamePostData, posts=postData, averageRating=averageRating)
 
-@app.route("/add_entry", methods=["POST"])
-def add_entry():
+@app.route("/add_post", methods=["POST"])
+def add_post():
     db = get_db()
     try:    # Failsafe for if the user posts a review with no rating, whether deliberate or intentional.
         rating_fix = request.form["rating"]     # Normal rating (1-5 stars)
@@ -122,5 +122,32 @@ def add_entry():
 
     flash("Review created.")
     return redirect(url_for("game", id=request.form["game_id"]))
+
+@app.route("/delete_post/<int:post_id>", methods=['POST'])
+def delete_post(post_id):
+    db = get_db()
+    db.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+    db.commit()
+
+    flash('Post deleted.', 'success') 
+    return redirect(url_for("index"))
+
+@app.route("/edit_post/<int:post_id>", methods=["POST"])
+def edit_post(post_id):
+    db = get_db()
+    title = request.form["title"]
+    description = request.form["description"]
+    try:
+        rating = request.form["rating"]
+    except Exception:
+        rating = 0
+
+    db.execute("UPDATE posts SET title = ?, description = ?, rating = ? WHERE id = ?", (title, description, rating, post_id))
+    db.commit()
+
+    newPostData = db.execute("SELECT * FROM posts WHERE id = ?", (post_id,))
+
+    flash("Post updated.", "success")
+    return redirect(url_for("game", id=newPostData.game_id))
 
 app.run(debug=True, port=5000)

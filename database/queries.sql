@@ -76,4 +76,3 @@
 --     "Block Blast is a free and popular block puzzle game that is your best choice when you want to pass the casual time and challenge your brain. The goal of this block puzzle game is easy yet fun: match and clear as many colored blocks as possible on the board."
 --     );
 
-SELECT AVG(posts.rating) FROM posts WHERE posts.game_id = 11;
