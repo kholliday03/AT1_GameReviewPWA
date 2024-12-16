@@ -2,35 +2,35 @@
 
 {% block login_status %}
 
-    <div class="header">
-        <form method="post">
-            <input type="text" name="game-search" class="search">
-                <button type="submit" class="search-button">Search</button>
-            </input>
-        </form>
+    <div class="header">    <!-- Search bar -->
+        <div class="search-log">
+            <form method="post">
+                <input type="text" name="game-search" class="search">
+                    <button type="submit">Search</button>
+                </input>
+            </form>
 
-        {% if not session.user_id %}
-        <a href="{{ url_for('login') }}" class="account-access-link">
-            Login
-        </a>
-        {% else %}
-        <p>Logged into {{ session.username }}</p>
-        <a href="{{ url_for('logout') }}" class="account-access-link">
-            Logout
-        </a>
-        {% endif %}
+            {% if not session.user_id %}
+            <a href="{{ url_for('login') }}" class="login-logout-button">
+                Login
+            </a>
+            {% else %}
+            <p>Logged into {{ session.username }}</p>
+            <a href="{{ url_for('logout') }}" class="login-logout-button">
+                Logout
+            </a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="game-collection">
-        {% for game in games %}
-            <a href="{{ url_for('game', id=game.id) }}" class="game-of-games">
-                <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image" class="game-cover">
-                <div class="game-title">
-                    {{ game.game_title }} ({{ game.year_released }})
-                </div>
-            </a>
-        {% endfor %}
+    <div class="all-games">
+    {% for game in games %}
+        <a href="{{ url_for('game', id=game.id) }}" class="game-box">
+            <img src="{{ game.game_cover_path }}" alt="{{ game.game_title }} Cover Image">  <!-- Game cover image -->
+            <h3>{{ game.game_title }} ({{ game.year_released }})</h3>   <!-- Game title -->
+        </a>
+    {% endfor %}
     </div>
 {% endblock %}

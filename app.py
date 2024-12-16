@@ -121,7 +121,7 @@ def add_post():
     db.commit()
 
     flash("Review created.", "success")
-    return redirect(url_for("game", id=request.form["game_id"]))
+    return redirect(url_for("game", id=request.form["game_id"]))    # Redirect to the same game link
 
 @app.route("/delete_post/<int:post_id>", methods=['POST'])
 def delete_post(post_id):
@@ -130,22 +130,22 @@ def delete_post(post_id):
     db.commit()
 
     flash('Post deleted.', 'success') 
-    return redirect(url_for("index"))
+    return redirect(url_for("game", id=request.form["game_id"]))
 
 @app.route("/edit_post/<int:post_id>", methods=["POST"])
 def edit_post(post_id):
     db = get_db()
     title = request.form["title"]
     description = request.form["description"]
-    try:
+    try:    # Normal rating 1-5 stars
         rating = request.form["edit-rating"]
-    except Exception:
+    except Exception:   # Rating of 0 if none given
         rating = 0
 
-    db.execute("UPDATE posts SET title = ?, description = ?, rating = ? WHERE id = ?", (title, description, rating, post_id))
+    db.execute("UPDATE posts SET title = ?, description = ?, rating = ? WHERE id = ?", (title, description, rating, post_id))   # Edit post query
     db.commit()
 
     flash("Post updated.", "success")
-    return redirect(url_for("game", id=request.form["game_id"]))
+    return redirect(url_for("game", id=request.form["game_id"]))    # Redirect to the same game link
 
 app.run(debug=True, port=5000)

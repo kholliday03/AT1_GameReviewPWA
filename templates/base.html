@@ -21,7 +21,7 @@
 </head>
 <body>
     <div class="header">
-        <a href="{{ url_for('index') }}" class="header-redirect">
+        <a href="{{ url_for('index') }}" class="logo-name">
             <img src="/static/icons/logo-128x128.png" class="logo">
             <h1>GGReviews</h1>
         </a>
@@ -29,7 +29,19 @@
         {% block login_status %}
         {% endblock %}
     </div>
-    {% block content %}
-    {% endblock %}
+
+    <div class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+            {% if messages %} 
+                {% for category, message in messages %} 
+                    <div class="message {% if category == 'error' %}error{% else %}success{% endif %}"> 
+                        {{ message }} 
+                    </div> 
+                {% endfor %} 
+            {% endif %} 
+        {% endwith %}
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>
