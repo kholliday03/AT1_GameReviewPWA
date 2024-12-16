@@ -13,87 +13,87 @@ def get_db():
     db.row_factory = sqlite3.Row 
     return db
 
-@app.route("/")
+@app.route("/") # Redirects to home page
 def index():
     return redirect((url_for("home")))
 
-@app.route("/home", defaults={"query": ""}, methods=["POST", "GET"]) # From ChatGPT - Setting a default value for query when query is empty - required as Flask handles this awkwardly.
-@app.route("/home/<query>", methods=["POST", "GET"])
+@app.route("/home", defaults={"query": ""}, methods=["POST", "GET"]) # Setting a default value for query when query is empty - required as Flask handles this awkwardly.
+@app.route("/home/<query>", methods=["POST", "GET"])    # If user puts something in the search bar
 def home(query):
     db = get_db()
     if request.method == "POST":
         query = request.form["game-search"]
 
-    if query:
+    if query:   # Only selects games which match the search
         games = db.execute("SELECT * FROM games WHERE game_title LIKE ? ORDER BY year_released DESC", (f"%{query}%",)).fetchall()
-    else:
+    else:   # Selects all games
         games = db.execute("SELECT * FROM games ORDER BY year_released DESC").fetchall()
 
     return render_template("index.html", games=games)
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST", "GET"])   # Login page
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form["username"] # Get username
+        password = request.form["password"] # Get password
 
         db = get_db()
         user = db.execute(
-            "SELECT * FROM accounts WHERE username = ?", (username,)
+            "SELECT * FROM accounts WHERE username = ?", (username,)    # Select an account which matchest the username
         ).fetchone()
 
-        if user and check_password_hash(user["password"], password):
-            session.clear()
+        if user and check_password_hash(user["password"], password):    # If passwords match
+            session.clear() # Enter a session
             session["user_id"] = user["id"]
             session["username"] = user["username"]
-            return redirect(url_for("index"))
+            return redirect(url_for("index"))   # Go to home page
         flash("Invalid username or password", "error")
 
-    return render_template("login.html")
+    return render_template("login.html")    # Retry login
 
-@app.route("/register", methods=["POST", "GET"])
+@app.route("/register", methods=["POST", "GET"])    # Register page
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form["username"] # Get username
+        password = request.form["password"] # Get password
 
         db = get_db()
         try:
             db.execute(
                 "INSERT INTO accounts (username, password) VALUES (?, ?)",
-                (username, generate_password_hash(password))
+                (username, generate_password_hash(password))    # Insert new account information into the database
             )
             db.commit()
             flash("Registration successful! Please log in.", "success")
-        except sqlite3.IntegrityError:
+        except sqlite3.IntegrityError:  # In case username given already exists
             flash("Username already exists! Please try again.", "error")
-        return redirect(url_for("login"))
+        return redirect(url_for("login"))   # Redirect to login page
     
     return render_template("register.html")
 
-@app.route("/offline")
+@app.route("/offline")  # Offline page
 def offline():
-    response = make_response(render_template('offline.html'))
+    response = make_response(render_template('offline.html'))   # Response to service worker
     return response
 
-@app.route("/service-worker.js")
+@app.route("/service-worker.js")    # Service worker
 def sw():
-    response = make_response(
+    response = make_response(   # Get the service worker from the appropriate directory
         send_from_directory(os.path.join(app.root_path, "static/js"), "service-worker.js")
     )
-    return response
+    return response # Send to offline page
 
-@app.route("/manifest.json")
+@app.route("/manifest.json")    # Icons for caching
 def manifest():
-    response = make_response(
+    response = make_response(   # Get the manifest from the appropriate directory
         send_from_directory(os.path.join(app.root_path, "static"), "manifest.json")
     )
-    return response
+    return response # Send to offline page
 
-@app.route("/logout")
+@app.route("/logout")   # Logout
 def logout():
-    session.clear()
-    return redirect(url_for("home"))
+    session.clear() # Clearing session
+    return redirect(url_for("home"))    # Redirect to home page
 
 @app.route("/game/<id>")
 def game(id):
@@ -120,7 +120,7 @@ def add_post():
     ))
     db.commit()
 
-    flash("Review created.")
+    flash("Review created.", "success")
     return redirect(url_for("game", id=request.form["game_id"]))
 
 @app.route("/delete_post/<int:post_id>", methods=['POST'])
@@ -138,16 +138,14 @@ def edit_post(post_id):
     title = request.form["title"]
     description = request.form["description"]
     try:
-        rating = request.form["rating"]
+        rating = request.form["edit-rating"]
     except Exception:
         rating = 0
 
     db.execute("UPDATE posts SET title = ?, description = ?, rating = ? WHERE id = ?", (title, description, rating, post_id))
     db.commit()
 
-    newPostData = db.execute("SELECT * FROM posts WHERE id = ?", (post_id,))
-
     flash("Post updated.", "success")
-    return redirect(url_for("game", id=newPostData.game_id))
+    return redirect(url_for("game", id=request.form["game_id"]))
 
 app.run(debug=True, port=5000)
